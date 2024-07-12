@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API Example</title>
+</head>
+<body>
+    <h1>Fetch API Example</h1>
+    
+    <button onclick="fetchAndDisplay()">Fetch Data</button>
+    <button onclick="fetchAndDisplayUser3()">Fetch Data user</button>
+    <button onclick="FetchApiComment()">Fetch api comment user</button>
+    <div id="dataContainer">
+        
+    </div>
+
+    <script>
+        function fetchAndDisplay() {
+            fetch("https://jsonplaceholder.typicode.com/posts/2/comments")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayData(data);
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    displayError(error.message);
+                });
+        }
+        function fetchAndDisplayUser3() {
+        fetch("https://jsonplaceholder.typicode.com/users/3")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayDataUser(data);
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    displayError(error.message);
+            });
+        }
+
+        function displayData(data) {
+            const dataContainer = document.getElementById('dataContainer');
+            dataContainer.innerHTML = ''; // Clear previous content
+
+            // Create HTML elements to display the fetched data
+            const ul = document.createElement('ul');
+
+            data.forEach(comment => {
+                const li = document.createElement('li');
+                li.textContent = `${comment.name}: ${comment.body}`;
+                ul.appendChild(li);
+            });
+
+            dataContainer.appendChild(ul);
+        }
+
+
+        function displayDataUser(data) {
+            const dataContainer = document.getElementById('dataContainer');
+            dataContainer.innerText = '';
+
+            const jsonstring=JSON.stringify(data,null,2);
+            dataContainer.innerText=jsonstring;
+           
+
+    
+          
+        }
+
+        
+function FetchApiComment(){
+    const dataContainer = document.getElementById('dataContainer');
+    dataContainer.innerHTML = ''; 
+
+    fetch("https://jsonplaceholder.typicode.com/users/5/posts")
+           .then((Response)=>{
+            if(!Response.ok){
+                throw new Error(' response was not found')
+            }
+            return Response.json();
+           }
+           
+        )
+        .then(data=>{
+            const ul = document.createElement('ul');
+
+            const jsonstring=JSON.stringify(data,null,2);
+            dataContainer.innerText=jsonstring;
+           
+            
+        })
+           .catch((error)=>{console.log(error)
+            displayError(error.message);
+           });
+
+}
+
+
+
+        function displayError(errorMessage) {
+            const dataContainer = document.getElementById('dataContainer');
+            dataContainer.innerHTML = `<p>Error: ${errorMessage}</p>`;
+        }
+    </script>
+</body>
+</html>
